@@ -32,5 +32,10 @@ namespace Praioou
             login.Show();
             this.Hide();
         }
+
+        private void FrmPrincipal_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

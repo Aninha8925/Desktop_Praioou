@@ -11,20 +11,24 @@ using MySql.Data.MySqlClient;
 
 namespace Praioou
 {
-    public partial class FrmPerfil : Form
+    public partial class FrmPerfilBarraqueiro : Form
     {
-
-        public FrmPerfil(string nome, string senha)
+        public FrmPerfilBarraqueiro(string nome, string senha)
         {
+           
             InitializeComponent();
             lblNome.Text = nome;
             lblSenha.Text = senha;
         }
 
-        private void FrmPerfil_Load(object sender, EventArgs e)
+        private void FrmPerfilBarraqueiro_Load(object sender, EventArgs e)
         {
 
+        }
 
+        private void FrmPerfilBarraqueiro_Load_1(object sender, EventArgs e)
+        {
+            
         }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,81 +49,57 @@ namespace Praioou
             versao.ShowDialog();
         }
 
-        private void criarNovaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Form CriarBarraca = Application.OpenForms["FrmAdicionarBarraca"];
-            CriarBarraca.Show();
-        }
-
-        private void verToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Form VerBarraca = Application.OpenForms["FrmVerBarraca"];
-            VerBarraca.Show();
-        }
-
-        private void fazerPedidoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnExcluir_Click(object sender, EventArgs e)
         {
             string nome = lblNome.Text;
-            
-            string deletarC = "DELETE FROM cliente WHERE nm_cliente = @nome";
 
+            string deletarB = "DELETE FROM barraqueiro WHERE nm_barraqueiro = @nome";
             using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
             {
                 conn.Open();
 
                 if (MessageBox.Show("Você realmente deseja excluir sua conta?", "Atenção!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                   
 
-                    using (MySqlCommand cmdC = new MySqlCommand(deletarC, conn))
+                    using (MySqlCommand cmdB = new MySqlCommand(deletarB, conn))
                     {
-                        cmdC.Parameters.AddWithValue("@nome", nome);
-                        cmdC.ExecuteNonQuery();
+
+                        cmdB.Parameters.AddWithValue("@nome", nome);
+                        cmdB.ExecuteNonQuery();
                     }
                     MessageBox.Show("Conta excluída com sucesso!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Form inicio = Application.OpenForms["FrmPrincipal"];
                     inicio.Show();
                     this.Dispose();
-                  
+
 
                     conn.Close();
 
-                } else
+                }
+                else
                 {
                     MessageBox.Show("ERRO ao deletar conta!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     return;
                 }
-               
+
             }
-        }
-
-        private void fabricanteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
 
         }
 
-        private void sobreNósToolStripMenuItem_Click(object sender, EventArgs e)
+        private void txtEditar_TextChanged(object sender, EventArgs e)
         {
 
         }
 
         private void txtNome_Click(object sender, EventArgs e)
         {
-           
+            
         }
 
-        private void textSenha_TextChanged(object sender, EventArgs e)
+        private void txtSenha_TextChanged(object sender, EventArgs e)
         {
-            
+           
         }
     }
 }
-

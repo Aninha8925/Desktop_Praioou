@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections;
+using MySql.Data.MySqlClient;
 
 namespace Praioou
 {
@@ -18,37 +11,86 @@ namespace Praioou
             InitializeComponent();
         }
 
-        private void FrmLogin_Load(object sender, EventArgs e)
-        {
-
-        }
-
-       
-       
-
-        private void btnEntrar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Form principal = Application.OpenForms["FrmPrincipal"];
-            principal.Show();
-        }
-
         private void btnEntrar_Click_1(object sender, EventArgs e)
         {
-            if (txtNome.Text == string.Empty || txtSenha.Text == string.Empty)
+            if (txtNome.Text != string.Empty && txtSenha.Text != string.Empty)
+            {
+              
+                string nome = txtNome.Text;
+                string senha = txtSenha.Text;
+                string bdsenha = "";
+
+                string loginBanhista = "select ds_senhaC from cliente where nm_cliente = @nome";
+                string loginBarraqueiro = "select ds_senhaB from barraqueiro where nm_barraqueiro = @nome";
+
+                using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
+                {
+                    conn.Open();
+
+                    // Primeiro tentar login como banhista
+                    using (MySqlCommand logarBanhista = new MySqlCommand(loginBanhista, conn))
+                    {
+                        logarBanhista.Parameters.AddWithValue("@nome", nome);
+
+                        using (MySqlDataReader reader = logarBanhista.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                bdsenha = reader["ds_senhaC"].ToString();
+
+                                if (senha == bdsenha)
+                                {
+                                    MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    FrmPerfil perfilBanhista = new FrmPerfil(nome, senha);
+                                    perfilBanhista.Show();
+                                    this.Close();
+                                    txtNome.Clear();
+                                    txtSenha.Clear();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    // Se não encontrou como banhista, tentar como barraqueiro
+                    using (MySqlCommand logarBarraqueiro = new MySqlCommand(loginBarraqueiro, conn))
+                    {
+                        logarBarraqueiro.Parameters.AddWithValue("@nome", nome);
+
+                        using (MySqlDataReader reader = logarBarraqueiro.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                bdsenha = reader["ds_senhaB"].ToString();
+
+                                if (senha == bdsenha)
+                                {
+                                    MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    Form perfilBarraqueiro = new FrmPerfilBarraqueiro(nome, senha);
+                                    perfilBarraqueiro.Show();
+                                    this.Close();
+                                    txtNome.Clear();
+                                    txtSenha.Clear();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    MessageBox.Show("Usuário ou senha incorretos!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            else
             {
                 MessageBox.Show("Você não preencheu alguns dos campos!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            } if (Class1.Nome.Contains(txtNome.Text) && Class1.Senha.Contains(txtSenha.Text))
-            {
-                MessageBox.Show("Login bem-sucedido!", "sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                FrmInicio inicio = new FrmInicio();
-                inicio.Show();
-                this.Close();
-            } else
-            {
-                MessageBox.Show("Esse Usuário não existe!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
             }
+        }
+
+        private void btnVoltar_Click(object sender, EventArgs e)
+        {
+            Form principal = Application.OpenForms["FrmPrincipal"];
+            principal.Show();
+            this.Close();
         }
     }
 }
