@@ -33,19 +33,18 @@
             this.contaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fabricanteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sobreNósToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reservasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.verMaisToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.PedidoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.verMaisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imgUser = new System.Windows.Forms.PictureBox();
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
-            this.txtNome = new System.Windows.Forms.TextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblSenha = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblFudo = new System.Windows.Forms.Label();
+            this.txtNovaSenha = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.txtSenha = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgUser)).BeginInit();
@@ -57,7 +56,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contaToolStripMenuItem,
             this.ajudaToolStripMenuItem,
-            this.reservasToolStripMenuItem,
             this.PedidoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -83,68 +81,30 @@
             // ajudaToolStripMenuItem
             // 
             this.ajudaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fabricanteToolStripMenuItem,
-            this.sobreNósToolStripMenuItem,
             this.versãoToolStripMenuItem});
             this.ajudaToolStripMenuItem.Name = "ajudaToolStripMenuItem";
             this.ajudaToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.ajudaToolStripMenuItem.Text = "Ajuda";
             // 
-            // fabricanteToolStripMenuItem
-            // 
-            this.fabricanteToolStripMenuItem.Name = "fabricanteToolStripMenuItem";
-            this.fabricanteToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.fabricanteToolStripMenuItem.Text = "Fabricante";
-            this.fabricanteToolStripMenuItem.Click += new System.EventHandler(this.fabricanteToolStripMenuItem_Click);
-            // 
-            // sobreNósToolStripMenuItem
-            // 
-            this.sobreNósToolStripMenuItem.Name = "sobreNósToolStripMenuItem";
-            this.sobreNósToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.sobreNósToolStripMenuItem.Text = "Sobre nós";
-            this.sobreNósToolStripMenuItem.Click += new System.EventHandler(this.sobreNósToolStripMenuItem_Click);
-            // 
             // versãoToolStripMenuItem
             // 
             this.versãoToolStripMenuItem.Name = "versãoToolStripMenuItem";
-            this.versãoToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.versãoToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.versãoToolStripMenuItem.Text = "Versão";
             this.versãoToolStripMenuItem.Click += new System.EventHandler(this.versãoToolStripMenuItem_Click);
             // 
-            // reservasToolStripMenuItem
-            // 
-            this.reservasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.verMaisToolStripMenuItem1});
-            this.reservasToolStripMenuItem.Name = "reservasToolStripMenuItem";
-            this.reservasToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.reservasToolStripMenuItem.Text = "Reservas";
-            // 
-            // verMaisToolStripMenuItem1
-            // 
-            this.verMaisToolStripMenuItem1.Name = "verMaisToolStripMenuItem1";
-            this.verMaisToolStripMenuItem1.Size = new System.Drawing.Size(118, 22);
-            this.verMaisToolStripMenuItem1.Text = "Ver mais";
-            // 
             // PedidoToolStripMenuItem
             // 
-            this.PedidoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.verMaisToolStripMenuItem});
             this.PedidoToolStripMenuItem.Name = "PedidoToolStripMenuItem";
-            this.PedidoToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.PedidoToolStripMenuItem.Text = "Pedidos";
+            this.PedidoToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.PedidoToolStripMenuItem.Text = "Reservar";
             this.PedidoToolStripMenuItem.Click += new System.EventHandler(this.fazerPedidoToolStripMenuItem_Click);
-            // 
-            // verMaisToolStripMenuItem
-            // 
-            this.verMaisToolStripMenuItem.Name = "verMaisToolStripMenuItem";
-            this.verMaisToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
-            this.verMaisToolStripMenuItem.Text = "Ver mais";
             // 
             // imgUser
             // 
-            this.imgUser.BackColor = System.Drawing.Color.Transparent;
+            this.imgUser.BackColor = System.Drawing.Color.White;
             this.imgUser.Image = ((System.Drawing.Image)(resources.GetObject("imgUser.Image")));
-            this.imgUser.Location = new System.Drawing.Point(338, 55);
+            this.imgUser.Location = new System.Drawing.Point(147, 65);
             this.imgUser.Name = "imgUser";
             this.imgUser.Size = new System.Drawing.Size(135, 131);
             this.imgUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -159,7 +119,7 @@
             this.btnExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExcluir.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExcluir.ForeColor = System.Drawing.Color.Tomato;
-            this.btnExcluir.Location = new System.Drawing.Point(661, 384);
+            this.btnExcluir.Location = new System.Drawing.Point(154, 317);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(110, 44);
             this.btnExcluir.TabIndex = 8;
@@ -175,33 +135,19 @@
             this.btnEditar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEditar.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEditar.ForeColor = System.Drawing.Color.LightSkyBlue;
-            this.btnEditar.Location = new System.Drawing.Point(26, 384);
+            this.btnEditar.Location = new System.Drawing.Point(529, 266);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(110, 44);
             this.btnEditar.TabIndex = 9;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = false;
-            // 
-            // txtNome
-            // 
-            this.txtNome.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtNome.Enabled = false;
-            this.txtNome.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNome.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtNome.Location = new System.Drawing.Point(306, 291);
-            this.txtNome.Multiline = true;
-            this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(192, 31);
-            this.txtNome.TabIndex = 7;
-            this.txtNome.Text = "Nome";
-            this.txtNome.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtNome.Click += new System.EventHandler(this.txtNome_Click);
+            this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
             // 
             // lblNome
             // 
             this.lblNome.AutoSize = true;
             this.lblNome.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNome.Location = new System.Drawing.Point(373, 199);
+            this.lblNome.Location = new System.Drawing.Point(177, 219);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(63, 25);
             this.lblNome.TabIndex = 10;
@@ -211,26 +157,72 @@
             // 
             this.lblSenha.AutoSize = true;
             this.lblSenha.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSenha.Location = new System.Drawing.Point(373, 244);
+            this.lblSenha.Location = new System.Drawing.Point(177, 263);
             this.lblSenha.Name = "lblSenha";
             this.lblSenha.Size = new System.Drawing.Size(63, 25);
             this.lblSenha.TabIndex = 11;
             this.lblSenha.Text = "label2";
             // 
+            // label1
+            // 
+            this.label1.Enabled = false;
+            this.label1.Location = new System.Drawing.Point(388, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(19, 389);
+            this.label1.TabIndex = 18;
+            // 
+            // lblFudo
+            // 
+            this.lblFudo.BackColor = System.Drawing.Color.Snow;
+            this.lblFudo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblFudo.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFudo.Location = new System.Drawing.Point(31, 33);
+            this.lblFudo.Name = "lblFudo";
+            this.lblFudo.Size = new System.Drawing.Size(736, 389);
+            this.lblFudo.TabIndex = 17;
+            this.lblFudo.Text = "    ";
+            // 
+            // txtNovaSenha
+            // 
+            this.txtNovaSenha.Font = new System.Drawing.Font("Nirmala UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNovaSenha.Location = new System.Drawing.Point(509, 201);
+            this.txtNovaSenha.Multiline = true;
+            this.txtNovaSenha.Name = "txtNovaSenha";
+            this.txtNovaSenha.Size = new System.Drawing.Size(159, 31);
+            this.txtNovaSenha.TabIndex = 16;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.Font = new System.Drawing.Font("Nirmala UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label3.Location = new System.Drawing.Point(506, 180);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(111, 17);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Confirmar Senha";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.White;
+            this.label2.Font = new System.Drawing.Font("Nirmala UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.label2.Location = new System.Drawing.Point(506, 125);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(81, 17);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Nova Senha";
+            // 
             // txtSenha
             // 
-            this.txtSenha.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtSenha.Enabled = false;
-            this.txtSenha.Font = new System.Drawing.Font("Nirmala UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSenha.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txtSenha.Location = new System.Drawing.Point(306, 341);
+            this.txtSenha.Font = new System.Drawing.Font("Nirmala UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSenha.Location = new System.Drawing.Point(509, 146);
             this.txtSenha.Multiline = true;
             this.txtSenha.Name = "txtSenha";
-            this.txtSenha.Size = new System.Drawing.Size(192, 31);
-            this.txtSenha.TabIndex = 12;
-            this.txtSenha.Text = "Senha";
-            this.txtSenha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtSenha.TextChanged += new System.EventHandler(this.textSenha_TextChanged);
+            this.txtSenha.Size = new System.Drawing.Size(159, 31);
+            this.txtSenha.TabIndex = 21;
             // 
             // FrmPerfil
             // 
@@ -240,16 +232,21 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.ControlBox = false;
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtSenha);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtNovaSenha);
             this.Controls.Add(this.lblSenha);
             this.Controls.Add(this.lblNome);
             this.Controls.Add(this.btnEditar);
             this.Controls.Add(this.btnExcluir);
-            this.Controls.Add(this.txtNome);
             this.Controls.Add(this.imgUser);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.lblFudo);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Nirmala UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmPerfil";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -270,18 +267,17 @@
         private System.Windows.Forms.ToolStripMenuItem sairToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ajudaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem versãoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fabricanteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sobreNósToolStripMenuItem;
         private System.Windows.Forms.PictureBox imgUser;
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnEditar;
-        private System.Windows.Forms.ToolStripMenuItem reservasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem PedidoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem verMaisToolStripMenuItem1;
-        private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Label lblSenha;
-        private System.Windows.Forms.ToolStripMenuItem verMaisToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblFudo;
+        private System.Windows.Forms.TextBox txtNovaSenha;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtSenha;
     }
 }

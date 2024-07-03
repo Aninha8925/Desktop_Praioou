@@ -25,145 +25,123 @@ namespace Praioou
             string numtel = txtNumTel.Text;
             string email = txtEmail.Text;
 
-            if (txtNome.Text == string.Empty || txtEmail.Text == string.Empty || txtNumTel.Text == string.Empty || txtSenha.Text == string.Empty || radBanhista.Checked == false && radBarraqueiro.Checked == false)
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(numtel) || string.IsNullOrEmpty(senha) || !radBanhista.Checked && !radBarraqueiro.Checked)
             {
                 MessageBox.Show("Você não preencheu alguns dos campos!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            else if (!txtEmail.Text.Contains("@") || !txtEmail.Text.Contains(".com"))
+            else if (!email.Contains("@") || !email.Contains(".com"))
             {
                 MessageBox.Show("O email não é válido!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            else if (txtNumTel.TextLength > 9 || txtNumTel.TextLength < 8)
+            else if (numtel.Length > 9 || numtel.Length < 8)
             {
                 MessageBox.Show("O número de telefone não é válido!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
-            else
+            string connectionString = "server=localhost;port=3307;database=db_praioou;uid=root;pwd=root";
+            //string connectionString = "server=localhost;port=3306;database=db_praioou;uid=root;pwd=peppapig14";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root");
-
-                conn.Open();
-
-
-
-
-                if (radBanhista.Checked == true)
+                try
                 {
-                    MySqlCommand cadastrarBanhista = new MySqlCommand("INSERT INTO cliente (nm_cliente, ds_emailC, nmr_telefoneC, ds_senhaC) VALUES (@nome, @email, @numtel, @senha)", conn);
-                    MySqlCommand verificanome = new MySqlCommand("SELECT COUNT(*) FROM cliente WHERE nm_cliente = @nome", conn);
-                    MySqlCommand verificaemail = new MySqlCommand("SELECT COUNT(*) FROM cliente WHERE ds_emailC = @email", conn);
-                    MySqlCommand verificatel = new MySqlCommand("SELECT COUNT(*) FROM cliente WHERE nmr_telefoneC = @numtel", conn);
+                    conn.Open();
 
-                    verificanome.Parameters.AddWithValue("@nome", nome);
-                    int countnome = Convert.ToInt32(verificanome.ExecuteScalar());
-                    if (countnome > 0)
+                    if (IsUserExists(conn, nome, email, numtel))
                     {
-                        MessageBox.Show("Esse nome já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         return;
                     }
 
-                    verificaemail.Parameters.AddWithValue("@email", email);
-                    int countemail = Convert.ToInt32(verificaemail.ExecuteScalar());
-                    if (countemail > 0)
+                    if (radBanhista.Checked)
                     {
-                        MessageBox.Show("Esse email já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-
-                    verificatel.Parameters.AddWithValue("@numtel", numtel);
-                    int counttel = Convert.ToInt32(verificatel.ExecuteScalar());
-                    if (counttel > 0)
-                    {
-                        MessageBox.Show("Esse número já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-
-
-
-                    else
-                    {
-                        conn.Close();
-                        conn.Open();
-
-
-                        cadastrarBanhista.Parameters.AddWithValue("@nome", nome);
-                        cadastrarBanhista.Parameters.AddWithValue("@senha", senha);
-                        cadastrarBanhista.Parameters.AddWithValue("@email", email);
-                        cadastrarBanhista.Parameters.AddWithValue("@numtel", numtel);
-                        cadastrarBanhista.ExecuteNonQuery();
+                        RegisterUser(conn, "cliente", nome, email, numtel, senha, "ds_senhaC", "ds_emailC", "nmr_telefoneC", "nm_cliente");
                         MessageBox.Show("Usuário cadastrado com sucesso!");
                         Form perfil = new FrmPerfil(nome, senha);
                         perfil.Show();
-                        this.Close();
-
-                        txtNome.Clear();
-                        txtEmail.Clear();
-                        txtNumTel.Clear();
-                        txtSenha.Clear();
-                        radBanhista.Checked = false;
-                        radBarraqueiro.Checked = false;
-
                     }
-                }
-
-                else if (radBarraqueiro.Checked == true)
-                {
-                    MySqlCommand cadastrarBarraqueiro = new MySqlCommand("INSERT INTO barraqueiro (nm_barraqueiro, ds_emailB, ds_senhaB, nmr_telefoneB) VALUES (@nome, @email,@senha, @numtel )", conn);
-                    MySqlCommand verificanomeB = new MySqlCommand("SELECT COUNT(*) FROM barraqueiro WHERE nm_barraqueiro = @nome", conn);
-                    MySqlCommand verificaemailB = new MySqlCommand("SELECT COUNT(*) FROM barraqueiro WHERE ds_emailB = @email", conn);
-                    MySqlCommand verificatelB = new MySqlCommand("SELECT COUNT(*) FROM barraqueiro WHERE nmr_telefoneB = @numtel", conn);
-
-                    verificanomeB.Parameters.AddWithValue("@nome", nome);
-                    int countnomeB = Convert.ToInt32(verificanomeB.ExecuteScalar());
-                    if (countnomeB > 0)
+                    else if (radBarraqueiro.Checked)
                     {
-                        MessageBox.Show("Esse nome já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-
-                    verificaemailB.Parameters.AddWithValue("@email", email);
-                    int countemailB = Convert.ToInt32(verificaemailB.ExecuteScalar());
-                    if (countemailB > 0)
-                    {
-                        MessageBox.Show("Esse email já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-
-                    verificatelB.Parameters.AddWithValue("@numtel", numtel);
-                    int counttelB = Convert.ToInt32(verificatelB.ExecuteScalar());
-                    if (counttelB > 0)
-                    {
-                        MessageBox.Show("Esse número já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        return;
-                    }
-                    else
-                    {
-                        conn.Close();
-                        conn.Open();
-
-                        cadastrarBarraqueiro.Parameters.AddWithValue("@nome", nome);
-                        cadastrarBarraqueiro.Parameters.AddWithValue("@senha", senha);
-                        cadastrarBarraqueiro.Parameters.AddWithValue("@email", email);
-                        cadastrarBarraqueiro.Parameters.AddWithValue("@numtel", numtel);
-                        cadastrarBarraqueiro.ExecuteNonQuery();
+                        RegisterUser(conn, "barraqueiro", nome, email, numtel, senha, "ds_senhaB", "ds_emailB", "nmr_telefoneB", "nm_barraqueiro");
                         MessageBox.Show("Usuário cadastrado com sucesso!");
                         Form perfilB = new FrmPerfilBarraqueiro(nome, senha);
                         perfilB.Show();
-                        this.Close();
-
-                        txtNome.Clear();
-                        txtEmail.Clear();
-                        txtNumTel.Clear();
-                        txtSenha.Clear();
-                        radBanhista.Checked = false;
-                        radBarraqueiro.Checked = false;
                     }
+
+                    this.Close();
+                    ClearFields();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private bool IsUserExists(MySqlConnection conn, string nome, string email, string numtel)
+        {
+            string[] tables = { "cliente", "barraqueiro" };
+            string[] nameColumns = { "nm_cliente", "nm_barraqueiro" };
+            string[] emailColumns = { "ds_emailC", "ds_emailB" };
+            string[] phoneColumns = { "nmr_telefoneC", "nmr_telefoneB" };
+
+            for (int i = 0; i < tables.Length; i++)
+            {
+                if (IsFieldExists(conn, tables[i], nameColumns[i], nome))
+                {
+                    MessageBox.Show("Esse nome já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return true;
+                }
+
+                if (IsFieldExists(conn, tables[i], emailColumns[i], email))
+                {
+                    MessageBox.Show("Esse email já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return true;
+                }
+
+                if (IsFieldExists(conn, tables[i], phoneColumns[i], numtel))
+                {
+                    MessageBox.Show("Esse número já está em uso! Use outro.", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return true;
+                }
             }
-           
+
+            return false;
+        }
+
+        private bool IsFieldExists(MySqlConnection conn, string tableName, string fieldName, string fieldValue)
+        {
+            string query = $"SELECT COUNT(*) FROM {tableName} WHERE {fieldName} = @fieldValue";
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@fieldValue", fieldValue);
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
+            }
+        }
+
+        private void RegisterUser(MySqlConnection conn, string tableName, string nome, string email, string numtel, string senha, string senhaColumn, string emailColumn, string phoneColumn, string nameColumn)
+        {
+            string query = $"INSERT INTO {tableName} ({nameColumn}, {emailColumn}, {phoneColumn}, {senhaColumn}) VALUES (@nome, @email, @numtel, @senha)";
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@nome", nome);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@numtel", numtel);
+                cmd.Parameters.AddWithValue("@senha", senha);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void ClearFields()
+        {
+            txtNome.Clear();
+            txtEmail.Clear();
+            txtNumTel.Clear();
+            txtSenha.Clear();
+            radBanhista.Checked = false;
+            radBarraqueiro.Checked = false;
+        }
 
         private void txtNome_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -175,6 +153,16 @@ namespace Praioou
         {
             if (char.IsLetter(e.KeyChar))
                 e.Handled = true;
+        }
+
+        private void txtNumTel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FrmCadastro_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

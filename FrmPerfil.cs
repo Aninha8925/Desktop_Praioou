@@ -21,11 +21,6 @@ namespace Praioou
             lblSenha.Text = senha;
         }
 
-        private void FrmPerfil_Load(object sender, EventArgs e)
-        {
-
-
-        }
 
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -45,38 +40,29 @@ namespace Praioou
             versao.ShowDialog();
         }
 
-        private void criarNovaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Form CriarBarraca = Application.OpenForms["FrmAdicionarBarraca"];
-            CriarBarraca.Show();
-        }
-
-        private void verToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            Form VerBarraca = Application.OpenForms["FrmVerBarraca"];
-            VerBarraca.Show();
-        }
-
+     
         private void fazerPedidoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Form pedido = new FrmReservar();
+            pedido.Show();
+            this.Hide();
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
             string nome = lblNome.Text;
-            
+
             string deletarC = "DELETE FROM cliente WHERE nm_cliente = @nome";
 
+
+            //string connectionString = "server=localhost;port=3306;database=db_praioou;uid=root;pwd=peppapig14";
             using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
             {
                 conn.Open();
 
                 if (MessageBox.Show("Você realmente deseja excluir sua conta?", "Atenção!!!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                   
+
 
                     using (MySqlCommand cmdC = new MySqlCommand(deletarC, conn))
                     {
@@ -87,39 +73,72 @@ namespace Praioou
                     Form inicio = Application.OpenForms["FrmPrincipal"];
                     inicio.Show();
                     this.Dispose();
-                  
+
 
                     conn.Close();
 
-                } else
-                {
-                    MessageBox.Show("ERRO ao deletar conta!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                    return;
                 }
-               
+            }
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+
+
+            string senha = lblSenha.Text;
+            string senhadigi = txtSenha.Text;
+            string nome = lblNome.Text;
+
+            if (txtSenha.Text == "" || txtNovaSenha.Text == "")
+            {
+                MessageBox.Show("Preencha os campos faltantes", "Atenção!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (txtSenha.Text == txtNovaSenha.Text)
+            {
+
+                string editar = "UPDATE cliente SET ds_senhaC = @novaSenha WHERE nm_cliente = @nome";
+
+                using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
+                {
+                    conn.Open();
+
+                    MySqlCommand comando = new MySqlCommand(editar, conn);
+                    comando.Parameters.AddWithValue("@novaSenha", senhadigi); // Usar a nova senha digitada
+                    comando.Parameters.AddWithValue("@nome", nome); // Usar o nome do cliente
+
+                    int linhasAfetadas = comando.ExecuteNonQuery();
+                    if (linhasAfetadas > 0)
+                    {
+                        MessageBox.Show("Senha alterada com sucesso!");
+                        lblSenha.Text = senhadigi; // Atualiza o label com a nova senha
+                        txtNovaSenha.Clear();
+
+                        // Se FrmPrincipal estiver aberto, mostra-o
+                        FrmPrincipal principal = Application.OpenForms.OfType<FrmPrincipal>().FirstOrDefault();
+                        if (principal != null)
+                            principal.Show();
+
+                        this.Dispose();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Não foi possível alterar a senha. Verifique os dados e tente novamente.");
+                    }
+
+                    conn.Close();
+                }
             }
         }
 
-        private void fabricanteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FrmPerfil_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void sobreNósToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtNome_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void textSenha_TextChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }
+
+    
+
 

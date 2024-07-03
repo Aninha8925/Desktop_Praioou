@@ -15,69 +15,87 @@ namespace Praioou
         {
             if (txtNome.Text != string.Empty && txtSenha.Text != string.Empty)
             {
-              
                 string nome = txtNome.Text;
                 string senha = txtSenha.Text;
                 string bdsenha = "";
 
-                string loginBanhista = "select ds_senhaC from cliente where nm_cliente = @nome";
-                string loginBarraqueiro = "select ds_senhaB from barraqueiro where nm_barraqueiro = @nome";
+                string loginBanhista = "SELECT ds_senhaC FROM cliente WHERE nm_cliente = @nome";
+                string loginBarraqueiro = "SELECT ds_senhaB FROM barraqueiro WHERE nm_barraqueiro = @nome";
 
-                using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
+                try
                 {
-                    conn.Open();
-
-                    // Primeiro tentar login como banhista
-                    using (MySqlCommand logarBanhista = new MySqlCommand(loginBanhista, conn))
+                    
+                    //string connectionString = "server=localhost;port=3306;database=db_praioou;uid=root;pwd=peppapig14";
+                    using (MySqlConnection conn = new MySqlConnection("server=localhost;port=3307;database=db_praioou;uid=root;pwd=root"))
                     {
-                        logarBanhista.Parameters.AddWithValue("@nome", nome);
+                        conn.Open();
 
-                        using (MySqlDataReader reader = logarBanhista.ExecuteReader())
+                        // Primeiro tentar login como banhista
+                        using (MySqlCommand logarBanhista = new MySqlCommand(loginBanhista, conn))
                         {
-                            if (reader.Read())
-                            {
-                                bdsenha = reader["ds_senhaC"].ToString();
+                            logarBanhista.Parameters.AddWithValue("@nome", nome);
 
-                                if (senha == bdsenha)
+                            using (MySqlDataReader reader = logarBanhista.ExecuteReader())
+                            {
+                                if (reader.Read())
                                 {
-                                    MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    FrmPerfil perfilBanhista = new FrmPerfil(nome, senha);
-                                    perfilBanhista.Show();
-                                    this.Close();
-                                    txtNome.Clear();
-                                    txtSenha.Clear();
-                                    return;
+                                    bdsenha = reader["ds_senhaC"].ToString();
+                                    reader.Close(); // Fechar o reader antes de abrir outro
+
+                                    if (senha == bdsenha)
+                                    {
+                                        MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        FrmPerfil perfilBanhista = new FrmPerfil(nome, senha);
+                                        perfilBanhista.Show();
+                                        this.Close();
+                                        txtNome.Clear();
+                                        txtSenha.Clear();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    reader.Close(); // Fechar o reader caso não tenha lido nada
                                 }
                             }
                         }
-                    }
 
-                    // Se não encontrou como banhista, tentar como barraqueiro
-                    using (MySqlCommand logarBarraqueiro = new MySqlCommand(loginBarraqueiro, conn))
-                    {
-                        logarBarraqueiro.Parameters.AddWithValue("@nome", nome);
-
-                        using (MySqlDataReader reader = logarBarraqueiro.ExecuteReader())
+                        // Se não encontrou como banhista, tentar como barraqueiro
+                        using (MySqlCommand logarBarraqueiro = new MySqlCommand(loginBarraqueiro, conn))
                         {
-                            if (reader.Read())
-                            {
-                                bdsenha = reader["ds_senhaB"].ToString();
+                            logarBarraqueiro.Parameters.AddWithValue("@nome", nome);
 
-                                if (senha == bdsenha)
+                            using (MySqlDataReader reader = logarBarraqueiro.ExecuteReader())
+                            {
+                                if (reader.Read())
                                 {
-                                    MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    Form perfilBarraqueiro = new FrmPerfilBarraqueiro(nome, senha);
-                                    perfilBarraqueiro.Show();
-                                    this.Close();
-                                    txtNome.Clear();
-                                    txtSenha.Clear();
-                                    return;
+                                    bdsenha = reader["ds_senhaB"].ToString();
+                                    reader.Close(); // Fechar o reader antes de qualquer ação
+
+                                    if (senha == bdsenha)
+                                    {
+                                        MessageBox.Show("Login bem-sucedido!", "Sucesso!!!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        Form perfilBarraqueiro = new FrmPerfilBarraqueiro(nome, senha);
+                                        perfilBarraqueiro.Show();
+                                        this.Close();
+                                        txtNome.Clear();
+                                        txtSenha.Clear();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    reader.Close(); // Fechar o reader caso não tenha lido nada
                                 }
                             }
                         }
-                    }
 
-                    MessageBox.Show("Usuário ou senha incorretos!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Usuário ou senha incorretos!", "Atenção!!!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao conectar ao banco de dados: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
