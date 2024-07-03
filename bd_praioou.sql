@@ -9,9 +9,14 @@ create table if not exists cliente (
     nmr_telefoneC varchar(15),
     ds_senhaC varchar(100),
     
+    
 	constraint pk_cliente
 		primary key (cd_cliente)
 );
+
+
+
+
 
 create table if not exists barraqueiro (
 	cd_barraqueiro int auto_increment,
@@ -29,6 +34,7 @@ create table if not exists carrinho (
     cd_barraqueiro int,
     nm_carrinho varchar(45),
     ds_localizacao text(85),
+    qt_pedido int(100),
     
     constraint pk_carrinho
 		primary key (cd_carrinho),
@@ -72,18 +78,11 @@ create table if not exists cardapio (
 
 create table produto (
 	cd_produto int auto_increment,
-    cd_cardapio int,
     nm_produto varchar(45),
-    ds_produto text(150),
     vl_produto float,
-    ds_categoria enum('doce', 'salgado', 'bebida'),
-    
     constraint pk_produto
-		primary key (cd_produto),
-        
-	constraint fk_produto_cardapio
-		foreign key (cd_cardapio)
-			references cardapio(cd_cardapio)
+		primary key (cd_produto)
+	
 );
 
 create table if not exists pedido (
@@ -316,223 +315,28 @@ insert into cardapio (cd_cardapio, cd_carrinho) values
 
 select * from cardapio;
 
-insert into produto (cd_produto,cd_cardapio,nm_produto,ds_produto,vl_produto, ds_categoria) values
-(100, 81, 'Picolé de Frutas Tropicais', 'Picolé cremoso feito com uma mistura de frutas tropicais, como manga, abacaxi e maracujá. Uma opção refrescante e deliciosa para se refrescar na praia.', 5.50, 'doce'),
-(101, 81, 'Espetinho de Queijo Coalho', 'Queijo coalho cortado em cubos e espetado em palitos de bambu, grelhado na churrasqueira até ficar dourado por fora e macio por dentro. Servido com molho de melado ou geleia de pimenta.', 9.90, 'salgado'),
-(102, 81, 'Camarão ao Alho e Óleo', 'Camarões frescos refogados no azeite com alho picado e pimenta vermelha, até ficarem macios e dourados. Uma opção simples e saborosa para os amantes de frutos do mar.', 15.75, 'salgado'),
-(103, 81, 'Suco de Abacaxi com Hortelã', 'Suco natural de abacaxi batido com folhas frescas de hortelã, servido gelado. Uma bebida refrescante e revigorante, perfeita para se hidratar na praia.', 7.50, 'bebida'),
-(104, 81, 'Casquinha de Siri', 'Casquinha de siri recheada com uma mistura de carne de siri desfiada, tomate, cebola, pimentão e temperos, coberta com queijo ralado e gratinada no forno até dourar.', 12.90, 'salgado'),
-(105, 81, 'Batata Frita com Cheddar e Bacon', 'Batatas fritas crocantes cobertas com queijo cheddar derretido e pedaços de bacon crocante. Um petisco irresistível para acompanhar uma cerveja gelada.', 14.50, 'salgado'),
-(106, 81, 'Coco Gelado', 'Coco verde cortado na hora, servido gelado com canudo para beber a água de coco natural. Uma opção refrescante e saudável para se hidratar na praia.', 6.50, 'doce'),
-(107, 81, 'Pastel de Camarão', 'Pastel crocante recheado com uma mistura de camarão refogado com cebola, tomate, pimentão e temperos, envolto por uma massa fina e frita até dourar.', 10.90, 'salgado'),
-(108, 81, 'Açaí na Tigela', 'Açaí batido com guaraná e servido em uma tigela, acompanhado de granola, banana, morango e mel. Uma opção energética e nutritiva para um lanche na praia.', 12.75, 'doce'),
-(109, 81, 'Mousse de Maracujá', 'Mousse leve e aerado feito com suco de maracujá fresco, leite condensado e creme de leite, servido gelado. Uma sobremesa refrescante e deliciosa.', 8.90, 'doce'),
-(110, 81, 'Cerveja Artesanal', 'Cerveja artesanal produzida localmente, com ingredientes selecionados e técnicas tradicionais de fabricação. Uma opção saborosa e exclusiva para os apreciadores de cerveja.', 11.50, 'bebida'),
-(111, 82, 'Tapioca de Frango com Catupiry', 'Tapioca recheada com uma mistura de frango desfiado e cremoso catupiry, envolto por uma massa fina de tapioca e aquecido até derreter o queijo.', 9.90, 'salgado'),
-(112, 82, 'Ceviche de Peixe Branco', 'Peixe branco fresco cortado em cubos e marinado em suco de limão, cebola roxa, pimenta, coentro e sal, servido com chips de batata-doce crocantes.', 17.90, 'salgado'),
-(113, 82, 'Mojito de Maracujá', 'Coquetel refrescante feito com rum, suco de maracujá, folhas de hortelã, limão e água com gás, servido gelado com cubos de gelo. Uma bebida tropical e saborosa.', 14.50, 'bebida'),
-(114, 82, 'Churrasco Misto', 'Seleção de carnes grelhadas na churrasqueira, incluindo picanha, linguiça, frango e coração de frango, servidas com farofa, vinagrete e pão de alho.', 35.90, 'salgado'),
-(115, 82, 'Caipirinha de Limão', 'Coquetel brasileiro feito com cachaça, limão, açúcar e gelo, macerados e misturados em um copo baixo. Uma bebida clássica e refrescante para acompanhar petiscos.', 12.75, 'bebida'),
-(116, 82, 'Queijo Coalho Assado', 'Fatias de queijo coalho grelhadas na churrasqueira até ficarem douradas por fora e macias por dentro, servidas com melado de cana ou geleia de pimenta.', 11.50, 'salgado'),
-(117, 82, 'Brigadeiro de Colher', 'Brigadeiro tradicional de chocolate, feito com leite condensado, cacau em pó e manteiga, servido em copinhos individuais para comer de colher. Uma sobremesa clássica e deliciosa.', 6.90, 'doce'),
-(118, 82, 'Coxinha de Frango', 'Coxinha de massa fina e crocante, recheada com uma mistura de frango desfiado, catupiry e temperos, modelada em formato de coxa e frita até dourar.', 8.50, 'salgado'),
-(119, 82, 'Caipiroska de Morango', 'Coquetel refrescante feito com vodka, morangos frescos, açúcar, limão e gelo, misturados em um copo baixo. Uma opção frutada e saborosa para os amantes de morango.', 13.25, 'bebida'),
-(120, 82, 'Pastel de Queijo', 'Pastel crocante recheado com uma mistura de queijos derretidos, envolto por uma massa fina e frita até dourar. Uma opção simples e saborosa para petiscar.', 7.90, 'salgado'),
-
-(121, 83, 'Sanduíche de Carne de Sol', 'Sanduíche feito com carne de sol desfiada e refogada, servida em pão de forma ou pão francês, acompanhada de queijo coalho grelhado, vinagrete e maionese temperada.', 16.90, 'salgado'),
-(122, 83, 'Creme de Açaí', 'Açaí batido com leite condensado e servido em um copo grande, coberto com granola, banana, leite em pó e leite condensado. Uma sobremesa energética e deliciosa.', 14.75, 'doce'),
-(123, 83, 'Caipirinha de Maracujá', 'Coquetel refrescante feito com cachaça, suco de maracujá, açúcar e gelo, misturados em um copo baixo. Uma opção tropical e saborosa para relaxar e aproveitar o momento.', 12.50, 'bebida'),
-(124, 83, 'Escondidinho de Carne Seca', 'Escondidinho feito com purê de mandioca, carne seca desfiada e refogada, coberto com queijo coalho gratinado. Uma opção reconfortante e saborosa para os amantes da culinária nordestina.', 18.50, 'salgado'),
-(125, 83, 'Sorvete de Tapioca', 'Sorvete cremoso de tapioca, feito com leite condensado, creme de leite e tapioca granulada, servido gelado. Uma sobremesa única e irresistível para os apreciadores de tapioca.', 9.90, 'doce'),
-(126, 83, 'Água de Coco', 'Água de coco natural servida em um coco verde, com canudo para beber. Uma opção refrescante e saudável para se hidratar durante o dia.', 4.50, 'bebida'),
-(127, 83, 'Pastel de Carne', 'Pastel crocante recheado com uma mistura de carne moída refogada com cebola, tomate, pimentão e temperos, envolto por uma massa fina e frita até dourar.', 8.90, 'salgado'),
-(128, 83, 'Coxinha de Camarão', 'Coxinha de massa fina e crocante, recheada com uma mistura de camarão refogado, catupiry e temperos, modelada em formato de coxa e frita até dourar.', 11.50, 'salgado'),
-(129, 83, 'Café Gelado', 'Café preto forte batido com gelo e leite condensado, servido em copo alto com chantilly por cima. Uma bebida revigorante e doce para os amantes de café.', 8.75, 'bebida'),
-(130, 83, 'Pudim de Leite', 'Pudim cremoso de leite condensado, leite integral e ovos, assado em banho-maria até ficar firme e dourado. Uma sobremesa clássica e reconfortante.', 7.50, 'doce'),
-
-(131, 84, 'Sanduíche de Peito de Peru', 'Sanduíche feito com peito de peru fatiado, alface, tomate e maionese, servido em pão integral ou francês. Uma opção leve e saudável para uma refeição rápida.', 11.50, 'salgado'),
-(132, 84, 'Salada de Frutas', 'Seleção de frutas frescas da estação cortadas em pedaços, como melancia, abacaxi, morango e manga, servidas em uma tigela e regadas com suco de laranja. Uma opção refrescante e nutritiva.', 9.90, 'doce'),
-(133, 84, 'Chá Gelado de Pêssego', 'Chá de pêssego batido com gelo e servido em copo alto com fatias de pêssego e hortelã. Uma bebida refrescante e aromática para os dias quentes.', 6.75, 'bebida'),
-(134, 84, 'Wrap de Frango e Vegetais', 'Wrap recheado com tiras de frango grelhado, alface, cenoura ralada, tomate e molho de iogurte, envolto por uma tortilha de trigo. Uma opção leve e saudável para uma refeição equilibrada.', 13.90, 'salgado'),
-(135, 84, 'Mousse de Limão', 'Mousse leve e cremoso feito com suco de limão fresco, leite condensado e creme de leite, servido gelado. Uma sobremesa cítrica e refrescante.', 8.50, 'doce'),
-(136, 84, 'Suco Detox', 'Suco natural feito com uma combinação de couve, maçã, pepino, gengibre e limão, batidos com água de coco. Uma bebida desintoxicante e revitalizante.', 10.25, 'bebida'),
-(137, 84, 'Salada Caesar', 'Salada feita com alface romana, croutons, queijo parmesão ralado e molho Caesar, acompanhada de tiras de frango grelhado. Uma opção leve e saborosa para uma refeição equilibrada.', 14.75, 'salgado'),
-(138, 84, 'Smoothie de Morango', 'Smoothie cremoso feito com morangos frescos, banana, iogurte natural e mel, batidos até ficarem homogêneos. Uma opção saudável e energética para um lanche rápido.', 7.90, 'doce'),
-(139, 84, 'Iced Latte', 'Café espresso batido com gelo e leite, servido em copo alto com chantilly por cima. Uma bebida refrescante e energética para os amantes de café.', 9.25, 'bebida'),
-(140, 84, 'Wrap Vegetariano', 'Wrap recheado com mix de vegetais grelhados, como abobrinha, berinjela, pimentão e cebola, acompanhados de queijo branco e molho pesto, envolto por uma tortilha de trigo. Uma opção leve e saudável para os vegetarianos.', 12.50, 'salgado'),
-
-(141, 85, 'Sanduíche de Rosbife', 'Sanduíche feito com rosbife fatiado, rúcula, tomate e mostarda, servido em pão ciabatta ou baguete. Uma opção saborosa e substancial para uma refeição rápida.', 15.50, 'salgado'),
-(142, 85, 'Torta de Maçã', 'Torta assada com uma generosa camada de maçãs fatiadas, canela, açúcar e suco de limão, coberta com massa crocante. Uma sobremesa clássica e reconfortante.', 10.90, 'doce'),
-(143, 85, 'Café Espresso', 'Café preto forte feito com uma dose única de café moído finamente, extraído sob pressão. Uma bebida encorpada e aromática para os amantes de café.', 3.75, 'bebida'),
-(144, 85, 'Cheesecake de Morango', 'Cheesecake cremoso feito com cream cheese, açúcar, ovos e essência de baunilha, coberto com geleia de morango e decorado com fatias da fruta. Uma sobremesa indulgente e irresistível.', 12.75, 'doce'),
-(145, 85, 'Suco de Melancia', 'Suco natural de melancia batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida refrescante e hidratante para os dias quentes.', 7.50, 'bebida'),
-(146, 85, 'Quiche Lorraine', 'Quiche assada com uma base de massa folhada, recheada com bacon, queijo gruyère, creme de leite, ovos e temperos, gratinada até dourar. Uma opção deliciosa e reconfortante para qualquer ocasião.', 13.90, 'salgado'),
-(147, 85, 'Tiramisu', 'Sobremesa italiana feita com camadas de biscoitos embebidos em café e licor, intercaladas com creme de queijo mascarpone e cacau em pó. Uma sobremesa elegante e cheia de sabor.', 11.50, 'doce'),
-(148, 85, 'Café com Leite', 'Café preto misturado com leite quente na proporção desejada, servido em uma xícara grande. Uma bebida reconfortante e equilibrada para qualquer momento do dia.', 4.25, 'bebida'),
-(149, 85, 'Croissant de Chocolate', 'Croissant folhado recheado com pedaços de chocolate meio amargo, assado até ficar dourado e crocante por fora e macio por dentro. Um petisco indulgente e irresistível.', 9.90, 'doce'),
-(150, 85, 'Cappuccino', 'Café espresso misturado com leite vaporizado e uma generosa camada de espuma de leite, polvilhado com cacau em pó ou canela. Uma bebida cremosa e reconfortante para os amantes de café.', 6.75, 'bebida'),
-
-(151, 86, 'Sanduíche de Salame', 'Sanduíche feito com salame fatiado, queijo prato, alface, tomate e maionese, servido em pão de forma ou baguete. Uma opção clássica e saborosa para um lanche rápido.', 10.50, 'salgado'),
-(152, 86, 'Pavê de Chocolate', 'Sobremesa montada em camadas alternadas de biscoitos tipo maisena e creme de chocolate, coberta com raspas de chocolate meio amargo. Uma sobremesa indulgente e irresistível para os amantes de chocolate.', 13.90, 'doce'),
-(153, 86, 'Chá de Camomila', 'Infusão de flores de camomila em água quente, servida em uma xícara grande. Uma bebida suave e relaxante, ideal para ser apreciada antes de dormir.', 5.25, 'bebida'),
-(154, 86, 'Mousse de Maracujá', 'Mousse leve e aerado feito com suco de maracujá fresco, leite condensado e creme de leite, servido gelado. Uma sobremesa refrescante e deliciosa.', 8.90, 'doce'),
-(155, 86, 'Suco de Limão', 'Suco natural de limão batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida cítrica e refrescante, perfeita para dias quentes.', 6.50, 'bebida'),
-(156, 86, 'Empadão de Frango', 'Empadão assado com uma massa crocante, recheado com uma mistura de frango desfiado, ervilhas, milho, cenoura e temperos, coberto com mais massa. Uma opção reconfortante e substancial para uma refeição completa.', 15.75, 'salgado'),
-(157, 86, 'Panna Cotta', 'Sobremesa italiana feita com creme de leite, açúcar, gelatina e essência de baunilha, servida gelada com calda de frutas vermelhas. Uma sobremesa elegante e delicada.', 11.50, 'doce'),
-(158, 86, 'Chocolate Quente', 'Leite quente misturado com chocolate meio amargo derretido, servido em uma xícara grande com chantilly por cima. Uma bebida cremosa e reconfortante para os dias frios.', 7.25, 'bebida'),
-(159, 86, 'Croissant de Queijo', 'Croissant folhado recheado com queijo prato derretido, assado até ficar dourado e crocante por fora e macio por dentro. Um petisco irresistível para os amantes de queijo.', 8.90, 'salgado'),
-(160, 86, 'Mocha', 'Café espresso misturado com chocolate em pó e leite vaporizado, servido em uma xícara grande com chantilly por cima. Uma bebida indulgente e energética para os amantes de café.', 8.75, 'bebida'),
-
-(161, 87, 'Sanduíche de Presunto', 'Sanduíche feito com presunto fatiado, queijo muçarela, alface, tomate e maionese, servido em pão de forma ou baguete. Uma opção clássica e reconfortante para um lanche rápido.', 9.50, 'salgado'),
-(162, 87, 'Torta de Limão', 'Torta montada com uma base de massa crocante, recheada com creme de limão feito com leite condensado e suco de limão, coberta com merengue italiano. Uma sobremesa cítrica e delicada.', 12.90, 'doce'),
-(163, 87, 'Chá Verde Gelado', 'Chá verde batido com gelo e servido em copo alto com fatias de limão e hortelã. Uma bebida refrescante e revigorante para os apreciadores de chá verde.', 6.75, 'bebida'),
-(164, 87, 'Tiramisu', 'Sobremesa italiana feita com camadas de biscoitos embebidos em café e licor, intercaladas com creme de queijo mascarpone e cacau em pó. Uma sobremesa elegante e cheia de sabor.', 11.50, 'doce'),
-(165, 87, 'Suco de Laranja', 'Suco natural de laranja batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida clássica e refrescante para qualquer ocasião.', 5.50, 'bebida'),
-(166, 87, 'Quiche de Alho-Poró', 'Quiche assada com uma base de massa folhada, recheada com alho-poró refogado, queijo gruyère, creme de leite, ovos e temperos, gratinada até dourar. Uma opção saborosa e reconfortante para uma refeição leve.', 14.90, 'salgado'),
-(167, 87, 'Cheesecake de Frutas Vermelhas', 'Cheesecake cremoso feito com cream cheese, açúcar, ovos e essência de baunilha, coberto com uma mistura de frutas vermelhas em calda. Uma sobremesa indulgente e refrescante.', 13.75, 'doce'),
-(168, 87, 'Café Americano', 'Café preto suave feito com uma dose única de café moído, extraído em água quente. Uma bebida simples e reconfortante para os amantes de café.', 3.50, 'bebida'),
-(169, 87, 'Croissant de Amêndoas', 'Croissant folhado recheado com creme de amêndoas, assado até ficar dourado e crocante por fora e macio por dentro, e coberto com amêndoas laminadas. Um petisco elegante e irresistível.', 10.90, 'doce'),
-(170, 87, 'Cappuccino', 'Café espresso misturado com leite vaporizado e uma generosa camada de espuma de leite, polvilhado com cacau em pó ou canela. Uma bebida cremosa e reconfortante para os amantes de café.', 6.75, 'bebida'),
-
-(171, 88, 'Sanduíche de Atum', 'Sanduíche feito com atum sólido em conserva, maionese, alface, tomate e cebola, servido em pão de forma integral ou ciabatta. Uma opção leve e saudável para uma refeição rápida.', 9.90, 'salgado'),
-(172, 88, 'Torta de Morango', 'Torta montada com uma base de massa crocante, recheada com creme de baunilha e morangos frescos, coberta com geléia de morango. Uma sobremesa clássica e deliciosa.', 12.50, 'doce'),
-(173, 88, 'Chá de Frutas Vermelhas', 'Infusão de frutas vermelhas em água quente, servida em uma xícara grande. Uma bebida aromática e refrescante para os apreciadores de frutas vermelhas.', 6.25, 'bebida'),
-(174, 88, 'Torta de Chocolate', 'Torta montada com uma base de massa crocante, recheada com creme de chocolate meio amargo, coberta com ganache de chocolate. Uma sobremesa indulgente e irresistível para os amantes de chocolate.', 11.90, 'doce'),
-(175, 88, 'Suco de Manga', 'Suco natural de manga batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida tropical e refrescante para qualquer ocasião.', 6.75, 'bebida'),
-(176, 88, 'Empadão de Camarão', 'Empadão assado com uma massa crocante, recheado com uma mistura de camarão refogado, catupiry, milho, ervilha e temperos, coberto com mais massa. Uma opção reconfortante e substancial para uma refeição completa.', 16.90, 'salgado'),
-(177, 88, 'Cheesecake de Chocolate Branco', 'Cheesecake cremoso feito com cream cheese, açúcar, ovos e chocolate branco derretido, coberto com raspas de chocolate branco. Uma sobremesa luxuosa e delicada.', 14.75, 'doce'),
-(178, 88, 'Café com Rum', 'Café preto forte misturado com rum, servido em uma xícara grande. Uma bebida quente e reconfortante para os apreciadores de café e rum.', 8.50, 'bebida'),
-(179, 88, 'Croissant de Presunto e Queijo', 'Croissant folhado recheado com presunto, queijo prato e uma fina camada de requeijão, assado até ficar dourado e crocante por fora e macio por dentro. Um petisco clássico e delicioso.', 9.50, 'salgado'),
-(180, 88, 'Mocaccino', 'Café espresso misturado com chocolate em pó, leite vaporizado e chantilly por cima, polvilhado com cacau em pó. Uma bebida indulgente e aromática para os amantes de café.', 7.25, 'bebida'),
-
-(181, 89, 'Sanduíche de Frango Grelhado', 'Sanduíche feito com filé de frango grelhado, alface, tomate e maionese, servido em pão integral ou ciabatta. Uma opção saudável e deliciosa para uma refeição rápida.', 11.90, 'salgado'),
-(182, 89, 'Torta de Limão', 'Torta montada com uma base de massa crocante, recheada com creme de limão feito com leite condensado e suco de limão, coberta com merengue italiano. Uma sobremesa cítrica e delicada.', 12.90, 'doce'),
-(183, 89, 'Chá de Hortelã', 'Infusão de folhas de hortelã em água quente, servida em uma xícara grande. Uma bebida refrescante e digestiva, ideal para ser apreciada após as refeições.', 5.75, 'bebida'),
-(184, 89, 'Torta de Banana', 'Torta montada com uma base de massa crocante, recheada com bananas fatiadas, açúcar, canela e suco de limão, coberta com uma camada de massa crocante. Uma sobremesa reconfortante e aromática.', 10.50, 'doce'),
-(185, 89, 'Suco de Abacaxi', 'Suco natural de abacaxi batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida tropical e refrescante para qualquer ocasião.', 6.25, 'bebida'),
-(186, 89, 'Empadão de Palmito', 'Empadão assado com uma massa crocante, recheado com uma mistura de palmito refogado, milho, ervilha, cebola, pimentão e temperos, coberto com mais massa. Uma opção vegetariana reconfortante e substancial.', 14.90, 'salgado'),
-(187, 89, 'Cheesecake de Morango', 'Cheesecake cremoso feito com cream cheese, açúcar, ovos e essência de baunilha, coberto com uma mistura de frutas vermelhas em calda. Uma sobremesa indulgente e refrescante.', 13.75, 'doce'),
-(188, 89, 'Café com Leite', 'Café preto misturado com leite quente na proporção desejada, servido em uma xícara grande. Uma bebida reconfortante e equilibrada para qualquer momento do dia.', 4.25, 'bebida'),
-(189, 89, 'Croissant de Queijo', 'Croissant folhado recheado com queijo prato derretido, assado até ficar dourado e crocante por fora e macio por dentro. Um petisco irresistível para os amantes de queijo.', 8.90, 'salgado'),
-(190, 89, 'Mocha', 'Café espresso misturado com chocolate em pó e leite vaporizado, servido em uma xícara grande com chantilly por cima. Uma bebida indulgente e energética para os amantes de café.', 8.75, 'bebida'),
-
-(191, 90, 'Sanduíche de Peru e Queijo', 'Sanduíche feito com peito de peru fatiado, queijo prato, alface, tomate e maionese, servido em pão de forma ou baguete. Uma opção clássica e reconfortante para um lanche rápido.', 10.90, 'salgado'),
-(192, 90, 'Torta de Morango', 'Torta montada com uma base de massa crocante, recheada com creme de baunilha e morangos frescos, coberta com geléia de morango. Uma sobremesa clássica e deliciosa.', 12.50, 'doce'),
-(193, 90, 'Chá de Frutas Vermelhas', 'Infusão de frutas vermelhas em água quente, servida em uma xícara grande. Uma bebida aromática e refrescante para os apreciadores de frutas vermelhas.', 6.25, 'bebida'),
-(194, 90, 'Torta de Chocolate', 'Torta montada com uma base de massa crocante, recheada com creme de chocolate meio amargo, coberta com ganache de chocolate. Uma sobremesa indulgente e irresistível para os amantes de chocolate.', 11.90, 'doce'),
-(195, 90, 'Suco de Manga', 'Suco natural de manga batido com gelo, servido em copo alto com uma fatia da fruta para decorar. Uma bebida tropical e refrescante para qualquer ocasião.', 6.75, 'bebida'),
-(196, 90, 'Empadão de Camarão', 'Empadão assado com uma massa crocante, recheado com uma mistura de camarão refogado, catupiry, milho, ervilha e temperos, coberto com mais massa. Uma opção reconfortante e substancial para uma refeição completa.', 16.90, 'salgado'),
-(197, 90, 'Cheesecake de Chocolate Branco', 'Cheesecake cremoso feito com cream cheese, açúcar, ovos e chocolate branco derretido, coberto com raspas de chocolate branco. Uma sobremesa luxuosa e delicada.', 14.75, 'doce'),
-(198, 90, 'Café com Rum', 'Café preto forte misturado com rum, servido em uma xícara grande. Uma bebida quente e reconfortante para os apreciadores de café e rum.', 8.50, 'bebida'),
-(199, 90, 'Croissant de Presunto e Queijo', 'Croissant folhado recheado com presunto, queijo prato e uma fina camada de requeijão, assado até ficar dourado e crocante por fora e macio por dentro. Um petisco clássico e delicioso.', 9.50, 'salgado'),
-(200, 90, 'Mocaccino', 'Café espresso misturado com chocolate em pó, leite vaporizado e chantilly por cima, polvilhado com cacau em pó. Uma bebida indulgente e aromática para os amantes de café.', 7.25, 'bebida'),
-
-(201, 91, 'Sanduíche de Peixe', 'Pão fresco recheado com filé de peixe grelhado, alface, tomate e molho especial.', 25.00, 'salgado'),
-(202, 91, 'Sorvete de Coco', 'Sorvete cremoso de coco, servido dentro do próprio coco verde.', 12.00, 'doce'),
-(203, 91, 'Bolinho de Bacalhau', 'Bolinhos crocantes feitos com bacalhau desfiado, acompanhados de molho de pimenta.', 20.00, 'salgado'),
-(204, 91, 'Salada Caesar', 'Salada fresca com alface, croutons, queijo parmesão e molho Caesar.', 18.00, 'salgado'),
-(205, 91, 'Mojito', 'Coquetel refrescante de rum, hortelã, limão, açúcar e água com gás.', 22.00, 'bebida'),
-(206, 91, 'Camarão à Baiana', 'Camarões salteados em azeite de dendê com leite de coco e pimentões.', 28.00, 'salgado'),
-(207, 91, 'Cachorro-Quente Especial', 'Pão macio recheado com salsicha, queijo, milho, ervilha, maionese e ketchup.', 14.00, 'salgado'),
-(208, 91, 'Batata Frita com Cheddar e Bacon', 'Batatas fritas crocantes cobertas com queijo cheddar derretido e pedaços de bacon.', 16.00, 'salgado'),
-(209, 91, 'Smoothie de Manga', 'Smoothie gelado feito com manga fresca, iogurte natural e mel.', 10.00, 'bebida'),
-(210, 91, 'Caipiroska de Kiwi', 'Caipiroska refrescante preparada com kiwi fresco e vodka.', 18.00, 'bebida'),
-
-(211, 92, 'Cerveja Artesanal de Frutas Tropicais', 'Cerveja artesanal com adição de frutas tropicais, refrescante e saborosa.', 15.00, 'bebida'),
-(212, 92, 'Tapioca de Frango com Catupiry', 'Tapioca recheada com frango desfiado e catupiry cremoso.', 14.00, 'salgado'),
-(213, 92, 'Espetinho Misto', 'Espetinho com cubos de carne, frango, linguiça, pimentão e cebola.', 25.00, 'salgado'),
-(214, 92, 'Camarão ao Alho e Óleo', 'Camarões salteados no alho e óleo, servidos com arroz branco e batata frita.', 28.00, 'salgado'),
-(215, 92, 'Pastel de Carne', 'Pastel crocante recheado com carne moída temperada.', 12.00, 'salgado'),
-(216, 92, 'Salada Caprese', 'Salada fresca com tomate, mussarela de búfala, manjericão e azeite de oliva.', 20.00, 'salgado'),
-(217, 92, 'Mousse de Maracujá', 'Sobremesa refrescante feita com suco de maracujá, leite condensado e creme de leite.', 15.00, 'doce'),
-(218, 92, 'Batata Rústica', 'Batatas cortadas em formato rústico e assadas com alecrim e alho.', 10.00, 'salgado'),
-(219, 92, 'Caipirinha de Tangerina', 'Caipirinha refrescante preparada com tangerina fresca e cachaça.', 18.00, 'bebida'),
-(220, 92, 'Pizza de Calabresa', 'Pizza de massa fina coberta com fatias de calabresa, cebola, tomate e queijo.', 30.00, 'salgado'),
-
-(221, 93, 'Pão de Alho', 'Pão francês recheado com pasta de alho e assado na brasa.', 8.00, 'salgado'),
-(222, 93, 'Casquinha de Lagosta', 'Casquinha de lagosta gratinada com queijo parmesão e ervas finas.', 40.00, 'salgado'),
-(223, 93, 'Ceviche de Camarão', 'Camarões frescos marinados em suco de limão, cebola roxa, pimenta e coentro.', 35.00, 'salgado'),
-(224, 93, 'Salada de Frutos do Mar', 'Salada fresca com frutos do mar variados, alface, tomate e molho de limão.', 38.00, 'salgado'),
-(225, 93, 'Tapioca de Nutella com Morango', 'Tapioca recheada com Nutella cremosa e morangos frescos.', 14.00, 'doce'),
-(226, 93, 'Mousse de Limão', 'Sobremesa cítrica e refrescante, feita com suco de limão e leite condensado.', 18.00, 'doce'),
-(227, 93, 'Caipirinha de Maracujá', 'Caipirinha refrescante preparada com maracujá fresco e cachaça.', 18.00, 'bebida'),
-(228, 93, 'Água de Coco Gelada', 'Água de coco fresca e gelada, ideal para se hidratar na praia.', 7.00, 'bebida'),
-(229, 93, 'Crepe de Queijo e Presunto', 'Crepe quentinho recheado com queijo derretido e presunto.', 12.00, 'salgado'),
-(230, 93, 'Tapioca de Chocolate com Banana', 'Tapioca recheada com chocolate derretido e fatias de banana.', 12.00, 'doce'),
-
-(231, 94, 'Sanduíche de Peixe Frito', 'Pão fresco recheado com filé de peixe frito crocante, alface, tomate e maionese.', 22.00, 'salgado'),
-(232, 94, 'Sorvete de Frutas Vermelhas', 'Sorvete cremoso com uma variedade de frutas vermelhas frescas.', 10.00, 'doce'),
-(233, 94, 'Camarão Empanado', 'Camarões grandes empanados e fritos, acompanhados de molho tártaro.', 28.00, 'salgado'),
-(234, 94, 'Salada de Rúcula com Tomate Seco', 'Salada fresca com rúcula, tomate seco, queijo parmesão e molho balsâmico.', 16.00, 'salgado'),
-(235, 94, 'Milkshake de Morango', 'Milkshake cremoso feito com sorvete de morango e leite.', 12.00, 'doce'),
-(236, 94, 'Espetinho de Carne', 'Espetinho de carne bovina grelhada com cebola e pimentão.', 20.00, 'salgado'),
-(237, 94, 'Água de Coco Natural', 'Água de coco fresca e natural, diretamente do coco verde.', 8.00, 'bebida'),
-(238, 94, 'Crepe de Nutella com Banana', 'Crepe quentinho recheado com Nutella e fatias de banana.', 14.00, 'doce'),
-(239, 94, 'Mousse de Maracujá com Chocolate', 'Sobremesa deliciosa feita com camadas de mousse de maracujá e chocolate.', 18.00, 'doce'),
-(240, 94, 'Caipirinha de Limão', 'Caipirinha clássica preparada com limão fresco e cachaça.', 16.00, 'bebida'),
-
-(241, 95, 'Pastel de Queijo e Presunto', 'Pastel crocante recheado com queijo derretido e presunto.', 12.00, 'salgado'),
-(242, 95, 'Cerveja Gelada', 'Cerveja gelada para refrescar e acompanhar o clima de praia.', 10.00, 'bebida'),
-(243, 95, 'Escondidinho de Carne Seca', 'Escondidinho cremoso feito com purê de mandioca e carne seca desfiada.', 30.00, 'salgado'),
-(244, 95, 'Coxinha de Frango', 'Coxinhas crocantes recheadas com frango desfiado e temperado.', 14.00, 'salgado'),
-(245, 95, 'Salada de Camarão', 'Salada fresca com camarões cozidos, alface, tomate e molho de limão.', 30.00, 'salgado'),
-(246, 95, 'Crepe de Queijo e Presunto', 'Crepe quentinho recheado com queijo derretido e presunto.', 12.00, 'salgado'),
-(247, 95, 'Açaí na Tigela', 'Açaí cremoso servido com granola, banana e mel. Energia pura para o seu dia.', 20.00, 'doce'),
-(248, 95, 'Caipirinha de Maracujá', 'Caipirinha refrescante preparada com maracujá fresco e cachaça.', 18.00, 'bebida'),
-(249, 95, 'Batata Frita com Cheddar e Bacon', 'Batatas fritas crocantes cobertas com queijo cheddar derretido e pedaços de bacon.', 16.00, 'salgado'),
-(250, 95, 'Smoothie de Abacaxi com Hortelã', 'Smoothie gelado feito com abacaxi fresco, hortelã e iogurte natural.', 14.00, 'bebida'),
-
-(251, 96, 'Barraca de Açaí', 'Açaí cremoso servido na tigela com granola, banana, leite condensado e mel.', 20.00, 'doce'),
-(252, 96, 'Petisco de Polvo', 'Fatias de polvo grelhado com azeite, alho e pimenta, acompanhadas de pão.', 25.00, 'salgado'),
-(253, 96, 'Cerveja Gelada', 'Cerveja gelada para refrescar e acompanhar o clima de praia.', 10.00, 'bebida'),
-(254, 96, 'Pão de Queijo Recheado', 'Pão de queijo recheado com queijo mussarela derretido.', 8.00, 'salgado'),
-(255, 96, 'Salada de Kani', 'Salada refrescante com kani-kama, pepino, manga, alface e molho de gengibre.', 18.00, 'salgado'),
-(256, 96, 'Pastel de Queijo', 'Pastel crocante recheado com queijo derretido e temperado.', 12.00, 'salgado'),
-(257, 96, 'Tábua de Frios', 'Seleção de queijos e frios servidos com torradas e geleia de pimenta.', 35.00, 'salgado'),
-(258, 96, 'Coco Gelado com Rum', 'Coco gelado servido com uma dose de rum, para um toque tropical.', 15.00, 'bebida'),
-(259, 96, 'Churrasco de Peixe', 'Espetinhos de peixe grelhado com legumes, servidos com molho de pimenta.', 32.00, 'salgado'),
-(260, 96, 'Batida de Maracujá', 'Bebida cremosa preparada com suco de maracujá, leite condensado e cachaça.', 18.00, 'bebida'),
-
-(261, 97, 'Pizza de Calabresa', 'Pizza de massa fina coberta com fatias de calabresa, cebola, tomate e queijo.', 30.00, 'salgado'),
-(262, 97, 'Pão de Alho', 'Pão francês recheado com pasta de alho e assado na brasa.', 8.00, 'salgado'),
-(263, 97, 'Casquinha de Lagosta', 'Casquinha de lagosta gratinada com queijo parmesão e ervas finas.', 40.00, 'salgado'),
-(264, 97, 'Ceviche de Camarão', 'Camarões frescos marinados em suco de limão, cebola roxa, pimenta e coentro.', 35.00, 'salgado'),
-(265, 97, 'Salada de Frutos do Mar', 'Salada fresca com frutos do mar variados, alface, tomate e molho de limão.', 38.00, 'salgado'),
-(266, 97, 'Tapioca de Nutella com Morango', 'Tapioca recheada com Nutella cremosa e morangos frescos.', 14.00, 'doce'),
-(267, 97, 'Mousse de Limão', 'Sobremesa cítrica e refrescante, feita com suco de limão e leite condensado.', 18.00, 'doce'),
-(268, 97, 'Caipirinha de Maracujá', 'Caipirinha refrescante preparada com maracujá fresco e cachaça.', 18.00, 'bebida'),
-(269, 97, 'Água de Coco Gelada', 'Água de coco fresca e gelada, ideal para se hidratar na praia.', 7.00, 'bebida'),
-(270, 97, 'Crepe de Queijo e Presunto', 'Crepe quentinho recheado com queijo derretido e presunto.', 12.00, 'salgado'),
-
-(271, 98, 'Tapioca de Frango com Catupiry', 'Tapioca recheada com frango desfiado e catupiry cremoso.', 14.00, 'salgado'),
-(272, 98, 'Espetinho Misto', 'Espetinho com cubos de carne, frango, linguiça, pimentão e cebola.', 25.00, 'salgado'),
-(273, 98, 'Camarão ao Alho e Óleo', 'Camarões salteados no alho e óleo, servidos com arroz branco e batata frita.', 28.00, 'salgado'),
-(274, 98, 'Pastel de Carne', 'Pastel crocante recheado com carne moída temperada.', 12.00, 'salgado'),
-(275, 98, 'Salada Caprese', 'Salada fresca com tomate, mussarela de búfala, manjericão e azeite de oliva.', 20.00, 'salgado'),
-(276, 98, 'Mousse de Maracujá', 'Sobremesa refrescante feita com suco de maracujá, leite condensado e creme de leite.', 15.00, 'doce'),
-(277, 98, 'Batata Rústica', 'Batatas cortadas em formato rústico e assadas com alecrim e alho.', 10.00, 'salgado'),
-(278, 98, 'Caipirinha de Tangerina', 'Caipirinha refrescante preparada com tangerina fresca e cachaça.', 18.00, 'bebida'),
-(279, 98, 'Cerveja Artesanal de Frutas', 'Cerveja artesanal com adição de frutas tropicais, leve e refrescante.', 12.00, 'bebida'),
-(280, 98, 'Tapioca de Chocolate com Banana', 'Tapioca recheada com chocolate derretido e fatias de banana.', 12.00, 'doce'),
-
-(281, 99, 'Sanduíche de Peixe', 'Pão fresco recheado com filé de peixe grelhado, alface, tomate e molho especial.', 25.00, 'salgado'),
-(282, 99, 'Sorvete de Coco', 'Sorvete cremoso de coco, servido dentro do próprio coco verde.', 12.00, 'doce'),
-(283, 99, 'Bolinho de Bacalhau', 'Bolinhos crocantes feitos com bacalhau desfiado, acompanhados de molho de pimenta.', 20.00, 'salgado'),
-(284, 99, 'Salada Caesar', 'Salada fresca com alface, croutons, queijo parmesão e molho Caesar.', 18.00, 'salgado'),
-(285, 99, 'Mojito', 'Coquetel refrescante de rum, hortelã, limão, açúcar e água com gás.', 22.00, 'bebida'),
-(286, 99, 'Camarão à Baiana', 'Camarões salteados em azeite de dendê com leite de coco e pimentões.', 28.00, 'salgado'),
-(287, 99, 'Cachorro-Quente Especial', 'Pão macio recheado com salsicha, queijo, milho, ervilha, maionese e ketchup.', 14.00, 'salgado'),
-(288, 99, 'Batata Frita com Cheddar e Bacon', 'Batatas fritas crocantes cobertas com queijo cheddar derretido e pedaços de bacon.', 16.00, 'salgado'),
-(289, 99, 'Smoothie de Manga', 'Smoothie gelado feito com manga fresca, iogurte natural e mel.', 10.00, 'doce'),
-(290, 99, 'Caipiroska de Kiwi', 'Caipiroska refrescante preparada com kiwi fresco e vodka.', 18.00, 'bebida'),
-
-(291, 100, 'Cerveja Artesanal de Frutas Tropicais', 'Cerveja artesanal com adição de frutas tropicais, refrescante e saborosa.', 15.00, 'bebida'),
-(292, 100, 'Tapioca de Frango com Catupiry', 'Tapioca recheada com frango desfiado e catupiry cremoso.', 14.00, 'salgado'),
-(293, 100, 'Espetinho Misto', 'Espetinho com cubos de carne, frango, linguiça, pimentão e cebola.', 25.00, 'salgado'),
-(294, 100, 'Camarão ao Alho e Óleo', 'Camarões salteados no alho e óleo, servidos com arroz branco e batata frita.', 28.00, 'salgado'),
-(295, 100, 'Pastel de Carne', 'Pastel crocante recheado com carne moída temperada.', 12.00, 'salgado'),
-(296, 100, 'Salada Caprese', 'Salada fresca com tomate, mussarela de búfala, manjericão e azeite de oliva.', 20.00, 'salgado');
-
+insert into produto (cd_produto,nm_produto,vl_produto) values
+(100,  'Picolé de Frutas Tropicais', 5.50),
+(101, 'Espetinho de Queijo Coalho', 9.90),
+(102,  'Camarão ao Alho e Óleo', 15.75),
+(103,  'Suco de Abacaxi com Hortelã', 7.50),
+(104,  'Casquinha de Siri', 12.90),
+(105,  'Batata Frita com Cheddar e Bacon', 14.50),
+(106,  'Coco Gelado',  6.50),
+(107,  'Pastel de Camarão', 10.90),
+(108,  'Açaí na Tigela',  12.75),
+(109,  'Mousse de Maracujá', 8.90),
+(110, 'Cerveja Artesanal',  11.50),
+(111,  'Tapioca de Frango com Catupiry', 9.90),
+(112,  'Ceviche de Peixe Branco',  17.90),
+(113, 'Mojito de Maracujá', 14.50),
+(114, 'Churrasco Misto', 35.90),
+(115,  'Caipirinha de Limão',  12.75),
+(116, 'Queijo Coalho Assado', 11.50),
+(117, 'Brigadeiro de Colher', 6.90),
+(118,  'Coxinha de Frango', 8.50),
+(119,  'Caipiroska de Morango',12.85),
+(120,  'Pastel de Queijo', 7.90);
 
 select * from produto;
 
